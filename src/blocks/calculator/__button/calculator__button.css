@@ -10,8 +10,9 @@
 }
 
 .calculator__button:hover {
-  background: #666;
+  background: #555;
 }
+
 
 @media (max-width: 768px) {
   .calculator__button {

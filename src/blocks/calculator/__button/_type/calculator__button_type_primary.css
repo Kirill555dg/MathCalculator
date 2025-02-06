@@ -1,0 +1,8 @@
+.calculator__button_type_primary {
+  background-color: #ff9800;  /* Оранжевый, но можно поменять */
+  color: white;
+  font-weight: bold;
+}
+.calculator__button_type_primary:hover {
+  background-color: #c27603; /* Затемнение при наведении */
+}

@@ -1,4 +1,5 @@
 @import url('./__button/calculator__button.css');
+@import url('./__button/_type/calculator__button_type_primary.css');
 @import url('./__display/calculator__display.css');
 @import url('./__keyboard/calculator__keyboard.css');
 
