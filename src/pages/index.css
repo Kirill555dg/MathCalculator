@@ -1,2 +1,14 @@
-@import url(../vendor/normalize.css);
-@import url(../vendor/fonts.css);
+@import url('../vendor/fonts.css');
+@import url('../vendor/normalize.css');
+@import url('../blocks/calculator/calculator.css');
+@import url('../blocks/display/display.css');
+@import url('../blocks/keyboard/keyboard.css');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
