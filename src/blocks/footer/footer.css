@@ -1,0 +1,25 @@
+@import url('./__text/footer__text.css');
+
+.footer {
+  background: transparent; /* Полностью сливается с фоном */
+  padding: 5vh 10px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .footer {
+      padding: 3vh 10px;
+  }
+  .footer__text {
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+      padding: 2vh 10px;
+  }
+  .footer__text {
+      font-size: 12px;
+  }
+}

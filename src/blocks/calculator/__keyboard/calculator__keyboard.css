@@ -1,0 +1,30 @@
+.calculator__keyboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .calculator__keyboard {
+    grid-template-columns: repeat(4, minmax(35px, 1fr));
+    gap: 6px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .calculator__keyboard {
+    grid-template-columns: repeat(4, minmax(30px, 1fr));
+    gap: 4px;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .calculator__keyboard {
+    grid-template-columns: repeat(4, minmax(25px, 1fr));
+    gap: 2px;
+  }
+}

@@ -1,0 +1,13 @@
+.footer__text {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.15); /* Едва заметный текст */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+}
+
+/* При наведении текст становится чуть заметнее */
+.footer__text:hover {
+  color: rgba(255, 255, 255, 0.4);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
