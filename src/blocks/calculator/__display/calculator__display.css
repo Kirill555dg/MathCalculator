@@ -8,6 +8,12 @@
   color: #fff;
   border: none;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 768px) {
@@ -17,14 +23,12 @@
   }
 }
 
-
 @media (max-width: 480px) {
   .calculator__display {
     font-size: 1.4rem;
     padding: 10px;
   }
 }
-
 
 @media (max-width: 320px) {
   .calculator__display {

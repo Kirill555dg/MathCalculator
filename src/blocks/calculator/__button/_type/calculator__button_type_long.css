@@ -1,0 +1,3 @@
+.calculator__button_type_long {
+  grid-column: span 2; /* Растягиваем кнопку на 2 колонки */
+}
