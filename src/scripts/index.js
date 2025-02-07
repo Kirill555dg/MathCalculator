@@ -84,7 +84,7 @@ function calculate() {
     display.textContent = "0";
     return;
   }
-  
+
   try {
     let result = eval(expression);
     display.textContent = Number.isFinite(result) ? result : "Infinity";
@@ -95,10 +95,6 @@ function calculate() {
 
   saveToLocalStorage();
 }
-
-
-
-
 
 
 function clearDisplay() {
@@ -144,6 +140,10 @@ keyboard.addEventListener("click", (event) => {
   const button = event.target;
   if (!button.classList.contains("calculator__button")) return;
 
+  if (["Ошибка", "Infinity"].includes(display.textContent)) {
+    clearDisplay();
+  }
+
   const action = button.dataset.action;
   const value = button.textContent;
 
@@ -171,7 +171,7 @@ keyboard.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   const key = event.key;
 
-  if (display.textContent === "Ошибка") {
+  if (["Ошибка", "Infinity"].includes(display.textContent)) {
     clearDisplay();
   }
 
