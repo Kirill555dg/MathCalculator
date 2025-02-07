@@ -7,20 +7,29 @@ let openBrackets = 0; // Счётчик открытых скобок
 
 function updateDisplay(value) {
   const lastChar = display.textContent.slice(-1);
+  const prevPart = display.textContent.match(/(\d+(\.\d*)?)$/)?.[0] || "";
 
-  // Запрещаем двойные операции и `.`
-  if ("+-×÷^.".includes(lastChar) && "+-×÷^.".includes(value)) {
+  // Замена последнего оператора при новом вводе операции
+  if ("+-×÷^.".includes(value) && "+-×÷^.".includes(lastChar)) {
+    display.textContent = display.textContent.slice(0, -1) + value;
+    saveToLocalStorage();
     return;
   }
 
-  // Если вводится `.`, проверяем, чтобы он был только один в числе
-  if (value === ".") {
-    const parts = display.textContent.split(/[\+\-×÷\^]/);
-    if (parts[parts.length - 1].includes(".")) return;
+  // Разрешаем `0.01`, `0.0001`, но запрещаем `000`
+  if (prevPart === "0" && value !== "." && !lastChar.includes(".")) {
+    if (/\d/.test(value)) {
+      display.textContent = display.textContent.slice(0, -1); // Убираем лишний `0`
+    }
   }
 
-  // Если на экране "0", заменяем его (кроме ".")
-  if (display.textContent === "0" && value !== ".") {
+  // Если вводится `.`, проверяем, чтобы он был только один в числе
+  if (value === "." && prevPart.includes(".")) {
+    return;
+  }
+
+  // Если на экране "0", заменяем его только при вводе цифры или `(`
+  if (display.textContent === "0" && (/\d/.test(value) || value === "(")) {
     display.textContent = value;
   } else {
     display.textContent += value;
@@ -28,6 +37,8 @@ function updateDisplay(value) {
 
   saveToLocalStorage();
 }
+
+
 
 function insertPower(value) {
   const lastChar = display.textContent.slice(-1);
@@ -44,21 +55,13 @@ function insertBracket(value) {
 
   if (value === "(") {
     // Открывающая скобка разрешена после оператора или в начале
-    if (display.textContent === "0") {
-      display.textContent = "(";
+    if (display.textContent === "0" || "+-×÷^(".includes(lastChar)) {
+      display.textContent = display.textContent === "0" ? "(" : display.textContent + "(";
       openBrackets++;
-    } else if ("+-×÷^(".includes(lastChar)) {
-      display.textContent += "(";
-      openBrackets++;
-    } else {
-      return;
     }
   } else if (value === ")") {
     // Нельзя закрывать скобку, если нет открытой
-    if (openBrackets === 0) return;
-
-    // Нельзя писать `)` сразу после `(` или оператора
-    if ("+-×÷^(".includes(lastChar)) return;
+    if (openBrackets === 0 || "+-×÷^(".includes(lastChar)) return;
 
     display.textContent += ")";
     openBrackets--;
@@ -66,6 +69,37 @@ function insertBracket(value) {
 
   saveToLocalStorage();
 }
+
+function calculate() {
+  let expression = display.textContent
+    .replace(/×/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/\^/g, "**"); // Заменяем `^` на `**` для eval()
+
+  // Удаляем операции в конце выражения
+  expression = expression.replace(/[\+\-\*\/\^\.]+$/, '');
+
+  // Если выражение пустое после очистки
+  if (!expression) {
+    display.textContent = "0";
+    return;
+  }
+  
+  try {
+    let result = eval(expression);
+    display.textContent = Number.isFinite(result) ? result : "Infinity";
+    openBrackets = 0;
+  } catch {
+    display.textContent = "Ошибка";
+  }
+
+  saveToLocalStorage();
+}
+
+
+
+
+
 
 function clearDisplay() {
   display.textContent = "0";
@@ -130,14 +164,18 @@ keyboard.addEventListener("click", (event) => {
   } else if (action === "bracket") {
     insertBracket(value);
   } else if (action === "calculate") {
-    // Позже добавим вычисления
+    calculate();
   }
 });
 
 document.addEventListener("keydown", (event) => {
   const key = event.key;
 
-  if (!isNaN(key) || "+-*/().".includes(key)) {
+  if (display.textContent === "Ошибка") {
+    clearDisplay();
+  }
+
+  if (!isNaN(key) || "+-*/.".includes(key)) {
     updateDisplay(key.replace("*", "×").replace("/", "÷"));
   } else if (key === "^") {
     insertPower("");
@@ -145,6 +183,7 @@ document.addEventListener("keydown", (event) => {
     insertBracket(key);
   } else if (key === "Enter") {
     event.preventDefault();
+    calculate();
   } else if (key === "Backspace") {
     deleteLastChar();
   } else if (key === "Escape") {
