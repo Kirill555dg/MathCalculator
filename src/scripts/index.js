@@ -86,6 +86,12 @@ function calculate() {
   }
 
   try {
+    // Если выражение содержит посторонние символы
+    if (/[^0-9+\-*/^().e\s]/.test(expression)) {
+      display.textContent = "Ошибка";
+      return;
+    }
+
     let result = eval(expression);
     display.textContent = Number.isFinite(result) ? result : "Infinity";
     openBrackets = 0;
